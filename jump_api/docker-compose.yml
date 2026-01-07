@@ -1,0 +1,27 @@
+version: '3.8'
+services:
+  app:
+    build:
+      context: .
+      dockerfile: app.dockerfile
+    working_dir: /var/www
+    environment:
+      - DB_ADAPTER=mysql2
+      - DB_HOST=172.17.0.1
+      - DB_PORT=3306
+      - DB_USER="rmtuser"
+      - DB_PASS=password
+      - DB_NAME=budget_app_db
+    volumes:
+      - ./:/var/www
+  web:
+    build:
+      context: .
+      dockerfile: web.dockerfile
+    working_dir: /var/www
+    volumes:
+      - ./:/var/www
+    depends_on:
+      - app
+    ports:
+      - 8004:80
